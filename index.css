@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  background: #F7F3EA;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  @apply bg-ivory text-charcoal-800 font-sans antialiased;
+  overflow-x: hidden;
+}
+
+::selection { @apply bg-gold/30 text-charcoal-900; }
+
+/* Luxury polish */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: .035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+}
+
+a, button { -webkit-tap-highlight-color: transparent; }
+
+button, a { touch-action: manipulation; }
+
+img {
+  max-width: 100%;
+  image-rendering: auto;
+}
+
+@media (hover: hover) {
+  img { transition: transform 700ms cubic-bezier(.22,1,.36,1); }
+}
+
+.container-px { @apply px-5 sm:px-6 md:px-10 lg:px-16; }
+
+.eyebrow {
+  @apply text-[10px] sm:text-xs tracking-widest2 uppercase text-gold font-medium;
+}
+
+.heading-serif { @apply font-serif text-charcoal-900; }
+.hairline { @apply border-t border-charcoal-800/10; }
+
+/* Better mobile spacing and tap targets */
+section[id] { scroll-margin-top: 84px; }
+
+/* Refined focus treatment */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #AD8A52;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* Gallery / horizontal scrollers */
+.scroll-thin::-webkit-scrollbar { height: 5px; width: 5px; }
+.scroll-thin::-webkit-scrollbar-track { background: rgba(27,26,24,.06); }
+.scroll-thin::-webkit-scrollbar-thumb { background: rgba(173,138,82,.55); border-radius: 999px; }
+
+/* Premium utility classes that can be used by existing components */
+.luxury-card {
+  box-shadow: 0 18px 50px rgba(27,26,24,.08);
+  transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s cubic-bezier(.22,1,.36,1);
+}
+.luxury-card:hover { transform: translateY(-5px); box-shadow: 0 28px 70px rgba(27,26,24,.13); }
+
+.gold-line {
+  width: 48px;
+  height: 1px;
+  background: #AD8A52;
+}
+
+/* Prevent accidental horizontal overflow on small screens */
+@media (max-width: 639px) {
+  .container-px { width: 100%; }
+}
