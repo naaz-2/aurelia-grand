@@ -1,0 +1,90 @@
+name: Deploy Aurelia Grand
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Fix project structure
+        run: |
+          mkdir -p src/components/sections
+          mkdir -p src/components/ui
+          mkdir -p src/data
+          mkdir -p public
+
+          mv App.jsx src/App.jsx
+          mv main.jsx src/main.jsx
+          mv index.css src/index.css
+
+          mv Navbar.jsx src/components/Navbar.jsx
+          mv MobileMenu.jsx src/components/MobileMenu.jsx
+          mv Footer.jsx src/components/Footer.jsx
+          mv WhatsAppButton.jsx src/components/WhatsAppButton.jsx
+
+          mv Button.jsx src/components/ui/Button.jsx
+          mv Modal.jsx src/components/ui/Modal.jsx
+
+          mv Hero.jsx src/components/sections/Hero.jsx
+          mv BookingBar.jsx src/components/sections/BookingBar.jsx
+          mv Introduction.jsx src/components/sections/Introduction.jsx
+          mv RoomCard.jsx src/components/sections/RoomCard.jsx
+          mv RoomModal.jsx src/components/sections/RoomModal.jsx
+          mv RoomSection.jsx src/components/sections/RoomSection.jsx
+          mv Amenities.jsx src/components/sections/Amenities.jsx
+          mv Dining.jsx src/components/sections/Dining.jsx
+          mv Offers.jsx src/components/sections/Offers.jsx
+          mv Gallery.jsx src/components/sections/Gallery.jsx
+          mv Testimonials.jsx src/components/sections/Testimonials.jsx
+          mv WhyChooseUs.jsx src/components/sections/WhyChooseUs.jsx
+          mv Location.jsx src/components/sections/Location.jsx
+          mv Contact.jsx src/components/sections/Contact.jsx
+
+          mv hotelData.js src/data/hotelData.js
+          mv favicon.svg public/favicon.svg
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
